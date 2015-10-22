@@ -1,4 +1,4 @@
-// Databricks notebook source exported at Tue, 20 Oct 2015 00:34:05 UTC
+// Databricks notebook source exported at Thu, 22 Oct 2015 21:01:52 UTC
 import org.apache.spark.ml.feature.{HashingTF, CountVectorizer, RegexTokenizer, StopWordsRemover}
 import org.apache.spark.mllib.clustering.{LDA, OnlineLDAOptimizer, DistributedLDAModel}
 import org.apache.spark.mllib.linalg.Vector
@@ -10,7 +10,15 @@ import org.apache.spark.ml.classification.LogisticRegressionModel
 
 // COMMAND ----------
 
+val data = table("tweetData").unionAll(table("reviewData"))
+
+// COMMAND ----------
+
 // MAGIC %md ### Fetching the training data we just created, as a DataFrame
+
+// COMMAND ----------
+
+// MAGIC %md ![pipeline](https://databricks-hossein.s3.amazonaws.com/Plots/lr-pipeline.png)
 
 // COMMAND ----------
 
