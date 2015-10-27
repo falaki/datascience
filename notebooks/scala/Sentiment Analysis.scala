@@ -1,4 +1,8 @@
-// Databricks notebook source exported at Tue, 27 Oct 2015 12:18:02 UTC
+// Databricks notebook source exported at Tue, 27 Oct 2015 14:34:02 UTC
+val data = table("tweetData").unionAll(table("reviewData"))
+
+// COMMAND ----------
+
 import org.apache.spark.ml.feature.{CountVectorizer, RegexTokenizer, StopWordsRemover}
 import org.apache.spark.sql.functions._
 import org.apache.spark.ml.classification.LogisticRegression
@@ -7,7 +11,7 @@ import org.apache.spark.ml.Pipeline
 
 // COMMAND ----------
 
-// MAGIC %md ![pipeline](https://databricks-hossein.s3.amazonaws.com/Plots/lr-pipeline.png)
+// MAGIC %md ![pipeline](https://databricks-hossein.s3.amazonaws.com/Plots/pipeline.png)
 
 // COMMAND ----------
 
@@ -28,7 +32,6 @@ val tokenizer = new RegexTokenizer()
 // COMMAND ----------
 
 val stopwords: Array[String] = sc.textFile("/mnt/hossein/text/stopwords.txt").flatMap(_.stripMargin.split("\\s+")).collect ++ Array("rt")
-
 
 // COMMAND ----------
 
