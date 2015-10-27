@@ -1,24 +1,17 @@
-// Databricks notebook source exported at Thu, 22 Oct 2015 21:01:52 UTC
-import org.apache.spark.ml.feature.{HashingTF, CountVectorizer, RegexTokenizer, StopWordsRemover}
-import org.apache.spark.mllib.clustering.{LDA, OnlineLDAOptimizer, DistributedLDAModel}
-import org.apache.spark.mllib.linalg.Vector
+// Databricks notebook source exported at Tue, 27 Oct 2015 12:18:02 UTC
+import org.apache.spark.ml.feature.{CountVectorizer, RegexTokenizer, StopWordsRemover}
+import org.apache.spark.sql.functions._
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.mllib.util.MLUtils
-import org.apache.spark.ml.classification.LogisticRegressionModel
 
-
-// COMMAND ----------
-
-val data = table("tweetData").unionAll(table("reviewData"))
-
-// COMMAND ----------
-
-// MAGIC %md ### Fetching the training data we just created, as a DataFrame
 
 // COMMAND ----------
 
 // MAGIC %md ![pipeline](https://databricks-hossein.s3.amazonaws.com/Plots/lr-pipeline.png)
+
+// COMMAND ----------
+
+val trainingData = data.withColumn("label", when(data("isHappy"), 1.0D).otherwise(0.0D))
 
 // COMMAND ----------
 
@@ -47,14 +40,6 @@ val filterer = new StopWordsRemover()
 
 // COMMAND ----------
 
-val featurizer = new HashingTF()
-  .setNumFeatures(10000)
-  .setInputCol("filtered")
-  .setOutputCol("features")
-
-
-// COMMAND ----------
-
 val countVectorizer = new CountVectorizer()
   .setInputCol("filtered")
   .setOutputCol("features")
@@ -72,7 +57,7 @@ val pipeline = new Pipeline().setStages(Array(tokenizer, filterer, countVectoriz
 
 // COMMAND ----------
 
-val lrModel = pipeline.fit(data)
+val lrModel = pipeline.fit(trainingData)
 
 // COMMAND ----------
 
