@@ -1,8 +1,4 @@
-// Databricks notebook source exported at Tue, 27 Oct 2015 14:34:02 UTC
-val data = table("tweetData").unionAll(table("reviewData"))
-
-// COMMAND ----------
-
+// Databricks notebook source exported at Tue, 27 Oct 2015 14:35:48 UTC
 import org.apache.spark.ml.feature.{CountVectorizer, RegexTokenizer, StopWordsRemover}
 import org.apache.spark.sql.functions._
 import org.apache.spark.ml.classification.LogisticRegression
